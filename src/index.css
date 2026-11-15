@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+@theme {
+  --font-sans: "Outfit Variable", "Noto Sans Tamil Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces Variable", Georgia, serif;
+
+  --color-ink-950: #0c0907;
+  --color-ink-900: #14100c;
+  --color-ink-800: #1c1712;
+  --color-ink-700: #2a221b;
+  --color-ink-600: #3a2f26;
+
+  --color-gold-200: #fae3b4;
+  --color-gold-300: #f5d08a;
+  --color-gold-400: #eab557;
+  --color-gold-500: #d99a2b;
+  --color-gold-600: #b87b17;
+
+  --color-cream: #f6efe6;
+  --color-on-gold: #0c0907;
+
+  --animate-pop: pop 0.24s cubic-bezier(0.2, 0.9, 0.3, 1.15);
+  --animate-fade: fade 0.2s ease-out;
+  --animate-toast: toast 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.15);
+
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(14px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes toast {
+    from { opacity: 0; transform: translateY(-12px) scale(0.96); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* ---------- Theme tokens (dark default, light via data-theme) ---------- */
+:root {
+  color-scheme: dark;
+  --card-top: #1e1914;
+  --card-bottom: #15110d;
+  --ticket-top: #211b15;
+  --ticket-bottom: #17120e;
+  --shadow-deep: rgba(0, 0, 0, 0.9);
+  --glow-a: rgba(234, 181, 87, 0.09);
+  --glow-b: rgba(217, 154, 43, 0.06);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  /* surfaces flip to warm paper tones */
+  --color-ink-950: #f5efe6;
+  --color-ink-900: #fffdf9;
+  --color-ink-800: #f3ebdf;
+  --color-ink-700: #e7ddcf;
+  --color-ink-600: #d8cbb9;
+  /* text + the "white" overlay base flip to espresso */
+  --color-cream: #22180f;
+  --color-white: #2b1f14;
+  /* deeper golds for contrast on light */
+  --color-gold-200: #9a5d0a;
+  --color-gold-300: #b06f12;
+  --color-gold-400: #e0a33a;
+  --color-gold-500: #cd8c20;
+  --color-gold-600: #a56c10;
+  /* status / category text colours */
+  --color-emerald-300: #059669;
+  --color-rose-300: #e11d48;
+  --color-sky-300: #0284c7;
+  --color-amber-300: #b45309;
+  --color-violet-300: #7c3aed;
+  --color-orange-300: #c2410c;
+
+  --card-top: #ffffff;
+  --card-bottom: #fbf6ef;
+  --ticket-top: #ffffff;
+  --ticket-bottom: #fcf7f0;
+  --shadow-deep: rgba(96, 62, 24, 0.2);
+  --glow-a: rgba(224, 163, 58, 0.16);
+  --glow-b: rgba(205, 140, 32, 0.09);
+}
+
+/* Tea Leaf: deep forest green surfaces with the same gold accent */
+:root[data-theme="green"] {
+  color-scheme: dark;
+  --color-ink-950: #07120d;
+  --color-ink-900: #0c1a13;
+  --color-ink-800: #12241b;
+  --color-ink-700: #1b3326;
+  --color-ink-600: #264433;
+  --color-cream: #eef5ee;
+
+  --card-top: #15291f;
+  --card-bottom: #0e1d15;
+  --ticket-top: #173024;
+  --ticket-bottom: #0f2018;
+  --shadow-deep: rgba(0, 0, 0, 0.85);
+  --glow-a: rgba(234, 181, 87, 0.08);
+  --glow-b: rgba(52, 211, 153, 0.08);
+}
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background-color: var(--color-ink-950);
+  background-image:
+    radial-gradient(1100px 600px at 0% -10%, var(--glow-a), transparent 60%),
+    radial-gradient(900px 500px at 110% 110%, var(--glow-b), transparent 60%);
+  background-attachment: fixed;
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+* { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.12) transparent; }
+
+/* ---------- Thermal receipt printing (58mm) ---------- */
+#print-root { display: none; }
+
+@media print {
+  @page { size: 58mm auto; margin: 0; }
+  html, body { background: #fff !important; height: auto; }
+  /* hide the app AND anything portalled to <body> (popups, toasts) — only the receipt prints */
+  body > *:not(#print-root) { display: none !important; }
+  #print-root { display: block !important; }
+}
